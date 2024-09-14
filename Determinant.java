@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 public class Determinant {
 
     private int calculateDeterminant(int[][] mat) {
