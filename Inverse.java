@@ -1,6 +1,5 @@
 import java.util.Scanner;
-
-public class Cofactor {
+public class Inverse {
     public int calculateDeterminant(int[][] mat) {
         int n = mat.length;
         if(n == 2) {
@@ -16,9 +15,6 @@ public class Cofactor {
         }
         return det;
     }
-
-
-    
 
     public int[][] getMinorMatrix(int[][] mat, int skipRow, int skipCol) {
         int n = mat.length;
@@ -62,8 +58,22 @@ public class Cofactor {
         }
         return mat;
     }
+    public double[][] getInverseMatrix(int[][] mat) {
+        int[][] adjointMat = transpose(this.calculateCofactorMatrix(mat));
+        // A^-1 = adj(A) / |A|
+        int determinant = this.calculateDeterminant(mat);
+        double[][] inverseMatrix = new double[mat.length][mat.length];
+        for(int i = 0; i < adjointMat.length; i++) {
+            for(int j = 0; j < adjointMat.length; j++) {
+                inverseMatrix[i][j] = adjointMat[i][j] / (double)determinant;
+            }
+        }
 
-    private static void printMatrix(int[][] mat) {
+        return inverseMatrix;
+
+    }
+
+    private static void printMatrix(double[][] mat) {
         for(int i = 0; i < mat.length; i++) {
             for(int j = 0; j < mat.length; j++) {
                 System.out.print(mat[i][j]);
@@ -75,10 +85,21 @@ public class Cofactor {
         }
     } 
 
+    public int[][] transpose(int[][] mat) {
+        for(int i = 0; i < mat.length; i++) {
+            for(int j = 0; j < mat.length; j++) {
+                int temp = mat[i][j];
+                mat[i][j] = mat[j][i];
+                mat[j][i] = temp;
+            }
+        }
+        return mat;
+    }
     public static void main(String[] args) {
-        Cofactor cofactor = new Cofactor();
-        int[][] mat = Cofactor.matrixInput();
-        int[][] cofactorMatrix = cofactor.calculateCofactorMatrix(mat);
-        printMatrix(cofactorMatrix);
+        int[][] mat = matrixInput();
+        Inverse inverse = new Inverse();
+        double[][] inverseMatrix = inverse.getInverseMatrix(mat);
+
+        printMatrix(inverseMatrix);
     }
 }
